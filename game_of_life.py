@@ -7,41 +7,45 @@ class PlayGame:
         return self.board
 
     def interactions(self):
-        # Creating a copy of the board so that while I update the board this doesnt
-        # affect cells which should/shouldn't be killed but aren't/are
-        temp_board = self.board
+        temp_board = copy.deepcopy(self.board)
 
+        for i in range(len(temp_board)):
+            for j in range(len(temp_board)):
 
-
-        for i in range(0,len(temp_board)-1):
-            for j in range(0,len(temp_board[i])-1):
-
-# If there is a cell present (==1) then check and keep count of neighbouring cells
                 if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
 
-                    if temp_board[i-1][j-1] == 1:
-                        count += 1
-                    if temp_board[i-1][j] == 1:
-                        count += 1
-                    if temp_board[i-1][j+1] == 1:
-                        count += 1
-                    if temp_board[i][j-1] == 1:
-                        count += 1
-                    if temp_board[i][j+1] == 1:
-                        count += 1
-                    if temp_board[i+1][j-1] == 1:
-                        count += 1
-                    if temp_board[i+1][j] == 1:
-                        count += 1
-                    if temp_board[i+1][j+1] == 1:
-                        count += 1
-                    #print("count:", count)
-                    if count < 2 or count > 3:
+                    print("i:",i,'j:',j)
+                    if self.cellDeath(i,j) == True:
+    #IMPORTANT, had an error here because when calling the method I was not using self but just cellDeath
                         self.board[i][j] = 0
-                        #print("self: ", self.board)
-                        #print("temp:", temp_board)
+                        print("self: ", self.board)
+                        print("temp:", temp_board)
+
+        return self.board
+
+    def cellDeath(self, i, j):
+        count = 0
+
+        if self.board[i-1][j-1] == 1:
+            count += 1
+        if self.board[i-1][j] == 1:
+            count += 1
+        if self.board[i-1][j+1] == 1:
+            count += 1
+        if self.board[i][j-1] == 1:
+            count += 1
+        if self.board[i][j+1] == 1:
+            count += 1
+        if self.board[i+1][j-1] == 1:
+            count += 1
+        if self.board[i+1][j] == 1:
+            count += 1
+        if self.board[i+1][j+1] == 1:
+            count += 1
+        print("count:", count)
+        if count < 2 or count > 3:
+            return True
+        return False
 
 if __name__ == '__main__':
     # print("  _")
