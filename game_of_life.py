@@ -49,222 +49,216 @@ class PlayGame:
 
 
     def interactions(self):
+        # If the board needs extending then extend it as new cells will be created outisde the current board
+        if self.checkIfBoardNeedsExtending() == True:
+            self.extendBoard()
+
         # Creating a copy of the board so that while I update the board this doesnt
         # affect cells which should/shouldn't be killed but aren't/are
         temp_board = copy.deepcopy(self.board)
 
-# For the middle of the board (start index at 1 and end at len-2):
+        # Now we need to perform nine different pieces of code but together they pass through
+        # the whole board. The problem is for the edge cases we can't check e.g whether board[i+1]
+        # has a cell as this will give a list index out of age error. So we have 9 different cases:
+        # the 4 corners, first and last rows and columns and the 'middle' of the board
 
+        # For the middle of the board (start index at 1 and end at len-2):
         for i in range(1,len(temp_board)-1):
             for j in range(1,len(temp_board[i])-1):
+                # For each position check for and keep count of neighbouring cells
+                count = 0
 
-# If there is a cell present (==1) then check and keep count of neighbouring cells
-                if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
+                if temp_board[i-1][j-1] == 1:
+                    count += 1
+                if temp_board[i-1][j] == 1:
+                    count += 1
+                if temp_board[i-1][j+1] == 1:
+                    count += 1
+                if temp_board[i][j-1] == 1:
+                    count += 1
+                if temp_board[i][j+1] == 1:
+                    count += 1
+                if temp_board[i+1][j-1] == 1:
+                    count += 1
+                if temp_board[i+1][j] == 1:
+                    count += 1
+                if temp_board[i+1][j+1] == 1:
+                    count += 1
 
-                    if temp_board[i-1][j-1] == 1:
-                        count += 1
-                    if temp_board[i-1][j] == 1:
-                        count += 1
-                    if temp_board[i-1][j+1] == 1:
-                        count += 1
-                    if temp_board[i][j-1] == 1:
-                        count += 1
-                    if temp_board[i][j+1] == 1:
-                        count += 1
-                    if temp_board[i+1][j-1] == 1:
-                        count += 1
-                    if temp_board[i+1][j] == 1:
-                        count += 1
-                    if temp_board[i+1][j+1] == 1:
-                        count += 1
-                    #print("count:", count)
-                    if count < 2 or count > 3:
-                        self.board[i][j] = 0
-                        #print("self: ", self.board)
-                        #print("temp:", temp_board)
+                # If this current position is a cell and count is <2 or >3 then cell dies
+                if (temp_board[i][j] == 1) and (count < 2 or count > 3):
+                    self.board[i][j] = 0
+                # If this current position is empty and there a 3 cells neighbouring cell is created
+                if (temp_board[i][j] == 0) and count == 3:
+                    self.board[i][j] = 1
+                # otherwise do nothing
 
-# Case for the first row:
-
+        # Case for the first row:
         for i in range(0,1):
             for j in range(1,len(temp_board[i])-1):
 
-                if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
+                count = 0
 
-                    if temp_board[i][j-1] == 1:
-                        count += 1
-                    if temp_board[i][j+1] == 1:
-                        count += 1
-                    if temp_board[i+1][j-1] == 1:
-                        count += 1
-                    if temp_board[i+1][j] == 1:
-                        count += 1
-                    if temp_board[i+1][j+1] == 1:
-                        count += 1
-                    #print("first row count:", count)
-                    if count < 2 or count > 3:
-                        self.board[i][j] = 0
+                if temp_board[i][j-1] == 1:
+                    count += 1
+                if temp_board[i][j+1] == 1:
+                    count += 1
+                if temp_board[i+1][j-1] == 1:
+                    count += 1
+                if temp_board[i+1][j] == 1:
+                    count += 1
+                if temp_board[i+1][j+1] == 1:
+                    count += 1
+
+                if (temp_board[i][j] == 1) and (count < 2 or count > 3):
+                    self.board[i][j] = 0
+                if (temp_board[i][j] == 0) and count == 3:
+                    self.board[i][j] = 1
 
 
-# Case for the first column:
+        # Case for the first column:
         for i in range(1,len(temp_board)-1):
             for j in range(0,1):
 
-                if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
+                count = 0
 
-                    if temp_board[i-1][j] == 1:
-                        count += 1
-                    if temp_board[i-1][j+1] == 1:
-                        count += 1
-                    if temp_board[i][j+1] == 1:
-                        count += 1
-                    if temp_board[i+1][j] == 1:
-                        count += 1
-                    if temp_board[i+1][j+1] == 1:
-                        count += 1
-                    #print("first column count:", count)
-                    if count < 2 or count > 3:
-                        self.board[i][j] = 0
+                if temp_board[i-1][j] == 1:
+                    count += 1
+                if temp_board[i-1][j+1] == 1:
+                    count += 1
+                if temp_board[i][j+1] == 1:
+                    count += 1
+                if temp_board[i+1][j] == 1:
+                    count += 1
+                if temp_board[i+1][j+1] == 1:
+                    count += 1
+
+                if (temp_board[i][j] == 1) and (count < 2 or count > 3):
+                    self.board[i][j] = 0
+                if (temp_board[i][j] == 0) and count == 3:
+                    self.board[i][j] = 1
 
 
-#Case for the last row:
+        #Case for the last row:
         for i in range(len(temp_board)-1, len(temp_board)):
             for j in range(1,len(temp_board[i])-1):
-                if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
 
-                    if temp_board[i-1][j-1] == 1:
-                        count += 1
-                    if temp_board[i-1][j] == 1:
-                        count += 1
-                    if temp_board[i-1][j+1] == 1:
-                        count += 1
-                    if temp_board[i][j-1] == 1:
-                        count += 1
-                    if temp_board[i][j+1] == 1:
-                        count += 1
-                    #print("last row count:", count)
-                    if count < 2 or count > 3:
-                        self.board[i][j] = 0
+                count = 0
 
+                if temp_board[i-1][j-1] == 1:
+                    count += 1
+                if temp_board[i-1][j] == 1:
+                    count += 1
+                if temp_board[i-1][j+1] == 1:
+                    count += 1
+                if temp_board[i][j-1] == 1:
+                    count += 1
+                if temp_board[i][j+1] == 1:
+                    count += 1
 
-#Case for the last column
+                if (temp_board[i][j] == 1) and (count < 2 or count > 3):
+                    self.board[i][j] = 0
+                if (temp_board[i][j] == 0) and count == 3:
+                    self.board[i][j] = 1
+
+        #Case for the last column
         for i in range(1,len(temp_board)-1):
             for j in range(len(temp_board[i])-1, len(temp_board[i])):
 
-                if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
+                count = 0
 
-                    if temp_board[i-1][j-1] == 1:
-                        count += 1
-                    if temp_board[i-1][j] == 1:
-                        count += 1
-                    if temp_board[i][j-1] == 1:
-                        count += 1
-                    if temp_board[i+1][j-1] == 1:
-                        count += 1
-                    if temp_board[i+1][j] == 1:
-                        count += 1
+                if temp_board[i-1][j-1] == 1:
+                    count += 1
+                if temp_board[i-1][j] == 1:
+                    count += 1
+                if temp_board[i][j-1] == 1:
+                    count += 1
+                if temp_board[i+1][j-1] == 1:
+                    count += 1
+                if temp_board[i+1][j] == 1:
+                    count += 1
 
-                    #print("last column count:", count)
-                    if count < 2 or count > 3:
-                        self.board[i][j] = 0
+                if (temp_board[i][j] == 1) and (count < 2 or count > 3):
+                    self.board[i][j] = 0
+                if (temp_board[i][j] == 0) and count == 3:
+                    self.board[i][j] = 1
 
-
-#Case for [0,0]
-
+        #Case for [0,0] - the top left corner
         for i in range(0, 1):
             for j in range(0, 1):
 
-                if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
+                count = 0
 
-                    if temp_board[i+1][j] == 1:
-                        count += 1
-                    if temp_board[i+1][j+1] == 1:
-                        count += 1
-                    if temp_board[i][j+1] == 1:
-                        count += 1
+                if temp_board[i+1][j] == 1:
+                    count += 1
+                if temp_board[i+1][j+1] == 1:
+                    count += 1
+                if temp_board[i][j+1] == 1:
+                    count += 1
 
-                    #print("[0,0] count:", count)
-                    if count < 2 or count > 3:
-                        self.board[i][j] = 0
+                if (temp_board[i][j] == 1) and (count < 2 or count > 3):
+                    self.board[i][j] = 0
+                if (temp_board[i][j] == 0) and count == 3:
+                    self.board[i][j] = 1
 
 
-#Case for [0,len-1]
-
+        #Case for [0,len-1] - the top right corner
         for i in range(0, 1):
             for j in range(len(temp_board[i])-1, len(temp_board[i])):
 
-                if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
+                count = 0
 
-                    if temp_board[i][j-1] == 1:
-                        count += 1
-                    if temp_board[i+1][j-1] == 1:
-                        count += 1
-                    if temp_board[i+1][j] == 1:
-                        count += 1
+                if temp_board[i][j-1] == 1:
+                    count += 1
+                if temp_board[i+1][j-1] == 1:
+                    count += 1
+                if temp_board[i+1][j] == 1:
+                    count += 1
 
-                    #print("[0,len-1] count:", count)
-                    if count < 2 or count > 3:
-                        self.board[i][j] = 0
+                if (temp_board[i][j] == 1) and (count < 2 or count > 3):
+                    self.board[i][j] = 0
+                if (temp_board[i][j] == 0) and count == 3:
+                    self.board[i][j] = 1
 
-
-#Case for [len-1,0]
-
+        # Case for [len-1,0] - the bottom left corner
         for i in range(len(temp_board)-1, len(temp_board)):
             for j in range(0,1):
 
-                if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
+                count = 0
 
-                    if temp_board[i-1][j] == 1:
-                        count += 1
-                    if temp_board[i-1][j+1] == 1:
-                        count += 1
-                    if temp_board[i][j+1] == 1:
-                        count += 1
+                if temp_board[i-1][j] == 1:
+                    count += 1
+                if temp_board[i-1][j+1] == 1:
+                    count += 1
+                if temp_board[i][j+1] == 1:
+                    count += 1
 
-                    #print("[len-1,0] count:", count)
-                    if count < 2 or count > 3:
-                        self.board[i][j] = 0
+                if (temp_board[i][j] == 1) and (count < 2 or count > 3):
+                    self.board[i][j] = 0
+                if (temp_board[i][j] == 0) and count == 3:
+                    self.board[i][j] = 1
 
-
-#Case for [len-1,len-1]
-
+        # Case for [len-1,len-1] - the bottom right corner
         for i in range(len(temp_board)-1, len(temp_board)):
             for j in range(len(temp_board[i])-1, len(temp_board[i])):
 
-                if temp_board[i][j] == 1:
-                    count = 0
-                    #print("i:",i,'j:',j)
+                count = 0
 
-                    if temp_board[i-1][j-1] == 1:
-                        count += 1
-                    if temp_board[i-1][j] == 1:
-                        count += 1
-                    if temp_board[i][j-1] == 1:
-                        count += 1
+                if temp_board[i-1][j-1] == 1:
+                    count += 1
+                if temp_board[i-1][j] == 1:
+                    count += 1
+                if temp_board[i][j-1] == 1:
+                    count += 1
 
-                    #print("[len-1,len-1] count:", count)
-                    if count < 2 or count > 3:
-                        self.board[i][j] = 0
+                if (temp_board[i][j] == 1) and (count < 2 or count > 3):
+                    self.board[i][j] = 0
+                if (temp_board[i][j] == 0) and count == 3:
+                    self.board[i][j] = 1
 
         return self.board
 
-# Create a function which will extend the board when called
-
+    # Create a method which will extend the board when called
     def extendBoard(self):
         num_rows = len(self.board)
         num_columns = len(self.board[0])
@@ -278,15 +272,14 @@ class PlayGame:
 
         return self.board
 
-# Create a method to check if need to extend the board
-
+    # Create a method to check if need to extend the board
     def checkIfBoardNeedsExtending(self):
         num_rows = len(self.board)
         num_columns = len(self.board[0])
 
-# Idea is to check if for the rows/columns on the edge there are 3 cells (1s) in a row
-# Go through the 4 edges in turn keeping a count of 1s resetting count in get a 0, once
-# count hits 3 return True
+        # Idea is to check if for the rows/columns on the edge there are 3 cells (1s) in a row
+        # Go through the 4 edges in turn keeping a count of 1s resetting count in get a 0, once
+        # count hits 3 return True
         count = 0
         for i in range(0, 1):
             for j in range(num_columns):
@@ -329,8 +322,7 @@ class PlayGame:
 
         return False #since by now if there was no count=3 we dont want to extend the board
 
-#playgame method which will take number of iterations and call other methods
-
+    # A method which will take number of iterations and call other methods
     def playTheGame(self, n):
         self.drawBoard()
         for i in range(n):
@@ -340,9 +332,9 @@ class PlayGame:
 
 if __name__ == '__main__':
     board1 = [[1,0,1,0,0,1,0],[0,1,1,1,0,1,1],[0,1,1,0,1,0,1],[1,0,0,1,0,0,1],[1,1,0,0,1,0,0],[1,1,0,0,1,1,0],[1,1,1,0,0,1,0]]
-    board2 = [[1,1,1,1],[1,1,0,1],[1,1,0,1],[1,0,1,1]]
+    board2 = [[1,1,1,0],[0,0,0,0],[0,1,1,1],[0,0,0,0]]
     # game1 = PlayGame(board1)
     # game1.playTheGame(4)
     game2 = PlayGame(board2)
-    game2.drawBoard()
-    print(game2.checkIfBoardNeedsExtending())
+    # game2.drawBoard()
+    game2.playTheGame(2)
