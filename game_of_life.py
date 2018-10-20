@@ -263,18 +263,36 @@ class PlayGame:
 
         return self.board
 
+# Create a function which will extend the board when called
+
+    def extendBoard(self):
+        num_rows = len(self.board)
+        num_columns = len(self.board[0])
+
+        for i in range(num_rows):
+            self.board[i].append(0)
+            self.board[i].insert(0, 0)
+
+        self.board.append([0] * (num_columns + 2))
+        self.board.insert(0, [0] * (num_columns + 2))
+
+        return self.board
+
+
+
 #playgame method which will take number of iterations and call other methods
 
     def playTheGame(self):
         self.drawBoard()
-        self.interactions()
+        self.extendBoard()
         self.drawBoard()
 
 
 if __name__ == '__main__':
-    # print("  _")
-    # print("|","_","|")
-    # print("|","_","|")
     board = [[1,0,1,0,0,1,0],[0,1,1,1,0,1,1],[0,1,1,0,1,0,1],[1,0,0,1,0,0,1],[1,1,0,0,1,0,0],[1,1,0,0,1,1,0],[1,1,1,0,0,1,0]]
-    game1 = PlayGame(board)
-    game1.playTheGame()
+    #board = [[0,1,0],[0,1,0],[1,1,0]]
+    #game1 = PlayGame(board)
+    # game1.playTheGame()
+    
+    game2 = PlayGame(board)
+    game2.playTheGame()
