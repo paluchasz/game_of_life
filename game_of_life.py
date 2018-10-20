@@ -278,21 +278,71 @@ class PlayGame:
 
         return self.board
 
+# Create a method to check if need to extend the board
 
+    def checkIfBoardNeedsExtending(self):
+        num_rows = len(self.board)
+        num_columns = len(self.board[0])
+
+# Idea is to check if for the rows/columns on the edge there are 3 cells (1s) in a row
+# Go through the 4 edges in turn keeping a count of 1s resetting count in get a 0, once
+# count hits 3 return True
+        count = 0
+        for i in range(0, 1):
+            for j in range(num_columns):
+                if self.board[i][j] == 1:
+                    count += 1
+                if self.board[i][j] == 0:
+                    count = 0
+                if count == 3:
+                    return True
+
+        count = 0
+        for i in range(num_rows - 1, num_rows):
+            for j in range(num_columns):
+                if self.board[i][j] == 1:
+                    count += 1
+                if self.board[i][j] == 0:
+                    count = 0
+                if count == 3:
+                    return True
+
+        count = 0
+        for i in range(num_rows):
+            for j in range(0, 1):
+                if self.board[i][j] == 1:
+                    count += 1
+                if self.board[i][j] == 0:
+                    count = 0
+                if count == 3:
+                    return True
+
+        count = 0
+        for i in range(num_rows):
+            for j in range(num_columns - 1, num_columns):
+                if self.board[i][j] == 1:
+                    count += 1
+                if self.board[i][j] == 0:
+                    count = 0
+                if count == 3:
+                    return True
+
+        return False #since by now if there was no count=3 we dont want to extend the board
 
 #playgame method which will take number of iterations and call other methods
 
-    def playTheGame(self):
+    def playTheGame(self, n):
         self.drawBoard()
-        self.extendBoard()
-        self.drawBoard()
+        for i in range(n):
+            self.interactions()
+            self.drawBoard()
 
 
 if __name__ == '__main__':
-    board = [[1,0,1,0,0,1,0],[0,1,1,1,0,1,1],[0,1,1,0,1,0,1],[1,0,0,1,0,0,1],[1,1,0,0,1,0,0],[1,1,0,0,1,1,0],[1,1,1,0,0,1,0]]
-    #board = [[0,1,0],[0,1,0],[1,1,0]]
-    #game1 = PlayGame(board)
-    # game1.playTheGame()
-    
-    game2 = PlayGame(board)
-    game2.playTheGame()
+    board1 = [[1,0,1,0,0,1,0],[0,1,1,1,0,1,1],[0,1,1,0,1,0,1],[1,0,0,1,0,0,1],[1,1,0,0,1,0,0],[1,1,0,0,1,1,0],[1,1,1,0,0,1,0]]
+    board2 = [[1,1,1,1],[1,1,0,1],[1,1,0,1],[1,0,1,1]]
+    # game1 = PlayGame(board1)
+    # game1.playTheGame(4)
+    game2 = PlayGame(board2)
+    game2.drawBoard()
+    print(game2.checkIfBoardNeedsExtending())
