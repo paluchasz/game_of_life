@@ -124,23 +124,23 @@ class GameOfLife:
         # Idea is to check if there are any cells (1s) on the edge, if there
         # are then return True as we will need an extra row of zeros. We go
         # through each edge seperately:
-        for i in range(0, 1):
+        for i in range(0, 2):
             for j in range(num_columns):
                 if self.board[i][j] == 1:
                     return True
 
-        for i in range(num_rows - 1, num_rows):
+        for i in range(num_rows - 2, num_rows):
             for j in range(num_columns):
                 if self.board[i][j] == 1:
                     return True
 
         for i in range(num_rows):
-            for j in range(0, 1):
+            for j in range(0, 2):
                 if self.board[i][j] == 1:
                     return True
 
         for i in range(num_rows):
-            for j in range(num_columns - 1, num_columns):
+            for j in range(num_columns - 2, num_columns):
                 if self.board[i][j] == 1:
                     return True
 
@@ -150,7 +150,9 @@ class GameOfLife:
 ''' Main function where we instantiate the class'''
 
 if __name__ == '__main__':
-    board1 = [[1,0,1,0,0,1,0],[0,1,1,1,0,1,1],[0,1,1,0,1,0,1],[1,0,0,1,0,0,1],[1,1,0,0,1,0,0],[1,1,0,0,1,1,0],[1,1,1,0,0,1,0]]
+    board1 = [[1,0,1,0,0,1,0],[0,1,1,1,0,1,1],[0,1,1,0,1,0,1],[1,0,0,1,0,0,1],[1,1,0,0,1,0,0],
+    [1,1,0,0,1,1,0],[1,1,1,0,0,1,0]] # random board
+    # Periodic solutions:
     board2 = [[1,1,0,0],[1,1,0,0],[0,0,1,1],[0,0,1,1]] # beacon (period 2)
     board3 = [[0,0,0,0],[0,1,1,1],[1,1,1,0],[0,0,0,0]] # toad (period 2)
     board4 = [[0,0,0],[1,1,1],[0,0,0]] # blinker (period 2)
@@ -159,7 +161,8 @@ if __name__ == '__main__':
     [0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,1,1,1,0,0,0,1,1,1,0,0],[1,0,0,0,0,1,0,1,0,0,0,0,1],
     [1,0,0,0,0,1,0,1,0,0,0,0,1],[1,0,0,0,0,1,0,1,0,0,0,0,1],[0,0,0,0,0,0,0,0,0,0,0,0,0],
     [0,0,1,1,1,0,0,0,1,1,1,0,0]] # pulsar (period 3)
-
+    # spaceships:
+    board6 = [[0,0,1],[1,0,1],[0,1,1]] #glider
+    board7 = [[0,0,0,0,0],[0,1,0,0,1],[1,0,0,0,0],[1,0,0,0,1],[1,1,1,1,0]] # lightweight spaceship?
     game2 = GameOfLife(board5)
-    # game2.drawBoard()
-    game2.playTheGame(6)
+    game2.playTheGame(10)

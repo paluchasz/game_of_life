@@ -1,55 +1,26 @@
-import copy
-from turtle import *
-#
-# color('red', 'yellow')
-# begin_fill()
-# while True:
-#     forward(200)
-#     left(140)
-#     if abs(pos()) < 1:
-#         break
-# end_fill()
-# done()
+from matplotlib import pyplot as plt
+from matplotlib import colors
+import numpy as np
+
+data = [[0,0,0],[0,0,0],[1,1,1]]
+
+reversed_data = []
+for i in range(len(data)-1, -1, -1):
+    reversed_data.append(data[i])
 
 
-#Below worked
-def interactions(self):
-    temp_board = copy.deepcopy(self.board)
+fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
 
-    for i in range(len(temp_board)):
-        for j in range(len(temp_board)):
+minor_ticks = np.arange(0, len(reversed_data), 1)
 
-            if temp_board[i][j] == 1:
+ax.set_xticks(minor_ticks)
+ax.set_yticks(minor_ticks)
 
-                print("i:",i,'j:',j)
-                if self.cellDeath(i,j) == True:
-#IMPORTANT, had an error here because when calling the method I was not using self but just cellDeath
-                    self.board[i][j] = 0
-                    print("self: ", self.board)
-                    print("temp:", temp_board)
+ax.grid(b = True)
 
-    return self.board
+cmap = colors.ListedColormap(['white','blue'])
 
-def cellDeath(self, i, j):
-    count = 0
-
-    if self.board[i-1][j-1] == 1:
-        count += 1
-    if self.board[i-1][j] == 1:
-        count += 1
-    if self.board[i-1][j+1] == 1:
-        count += 1
-    if self.board[i][j-1] == 1:
-        count += 1
-    if self.board[i][j+1] == 1:
-        count += 1
-    if self.board[i+1][j-1] == 1:
-        count += 1
-    if self.board[i+1][j] == 1:
-        count += 1
-    if self.board[i+1][j+1] == 1:
-        count += 1
-    print("count:", count)
-    if count < 2 or count > 3:
-        return True
-    return False
+plt.pcolormesh(reversed_data, cmap = cmap)
+plt.title("Iteration:")
+plt.show()
