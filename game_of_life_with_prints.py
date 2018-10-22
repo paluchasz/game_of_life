@@ -4,6 +4,17 @@ class PlayGame:
     def __init__(self, board):
         self.board = board
 
+    # A method which will take number of iterations and call other methods
+    def playTheGame(self, n):
+        print("Original set up:")
+        self.drawBoard()
+
+        for i in range(n):
+            self.interactions()
+            print()
+            print("Iteration:", i + 1)
+            self.drawBoard()
+
     def drawBoard(self):
         for i in range(len(self.board)):
             for j in range(len(self.board[i])):
@@ -13,6 +24,7 @@ class PlayGame:
                     print("[o]", end='')
             print()
 
+            #run iteration
     def interactions(self):
         # If the board needs extending then extend it as new cells will be created outisde the current board
         if self.checkIfBoardNeedsExtending() == True:
@@ -287,24 +299,19 @@ class PlayGame:
 
         return False #since by now if there was no count=3 we dont want to extend the board
 
-    # A method which will take number of iterations and call other methods
-    def playTheGame(self, n):
-        print("Original set up:")
-        self.drawBoard()
-
-        for i in range(n):
-            self.interactions()
-            print()
-            print("Iteration:", i + 1)
-            self.drawBoard()
-
-
 
 if __name__ == '__main__':
     board1 = [[1,0,1,0,0,1,0],[0,1,1,1,0,1,1],[0,1,1,0,1,0,1],[1,0,0,1,0,0,1],[1,1,0,0,1,0,0],[1,1,0,0,1,1,0],[1,1,1,0,0,1,0]]
-    board2 = [[1,1,1,0],[0,0,0,0],[0,1,1,1],[0,0,0,0]]
+    board2 = [[1,1,0,0],[1,1,0,0],[0,0,1,1],[0,0,1,1]] # beacon (period 2)
+    board3 = [[0,0,0,0],[0,1,1,1],[1,1,1,0],[0,0,0,0]] # toad (period 2)
+    board4 = [[0,0,0],[1,1,1],[0,0,0]] # blinker (period 2)
+    board5 = [[0,0,1,1,1,0,0,0,1,1,1,0,0],[0,0,0,0,0,0,0,0,0,0,0,0,0],[1,0,0,0,0,1,0,1,0,0,0,0,1],
+    [1,0,0,0,0,1,0,1,0,0,0,0,1],[1,0,0,0,0,1,0,1,0,0,0,0,1],[0,0,1,1,1,0,0,0,1,1,1,0,0],
+    [0,0,0,0,0,0,0,0,0,0,0,0,0],[0,0,1,1,1,0,0,0,1,1,1,0,0],[1,0,0,0,0,1,0,1,0,0,0,0,1],
+    [1,0,0,0,0,1,0,1,0,0,0,0,1],[1,0,0,0,0,1,0,1,0,0,0,0,1],[0,0,0,0,0,0,0,0,0,0,0,0,0],
+    [0,0,1,1,1,0,0,0,1,1,1,0,0]] # pulsar (period 3)
     # game1 = PlayGame(board1)
     # game1.playTheGame(4)
-    game2 = PlayGame(board1)
+    game2 = PlayGame(board5)
     # game2.drawBoard()
     game2.playTheGame(5)
