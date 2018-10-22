@@ -125,7 +125,7 @@ class GameOfLife:
         num_rows = len(self.board)
         num_columns = len(self.board[0])
 
-        # Idea is to check if there are any cells (1s) on the edge, if there
+        # Check if there are any cells (1s) on the outer two edge layers if there
         # are then return True as we will need an extra row of zeros. We go
         # through each edge seperately:
         for i in range(0, 2):
